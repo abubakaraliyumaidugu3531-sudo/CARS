@@ -54,4 +54,25 @@ class PrerequisiteModel {
         $stmt->bind_param("ii", $course_id, $prerequisite_id);
         return $stmt->execute();
     }
+
+    public function remove($course_id, $prerequisite_id) {
+        $stmt = $this->conn->prepare(
+            "DELETE FROM prerequisites WHERE course_id = ? AND prerequisite_id = ?"
+        );
+        $stmt->bind_param("ii", $course_id, $prerequisite_id);
+        return $stmt->execute();
+    }
+
+    // All prerequisite pairs with course codes/titles, for the admin screen.
+    public function listAll() {
+        return $this->conn->query(
+            "SELECT p.id, p.course_id, p.prerequisite_id,
+                    c.code AS course_code, c.title AS course_title,
+                    pre.code AS prereq_code, pre.title AS prereq_title
+             FROM prerequisites p
+             JOIN courses c ON p.course_id = c.id
+             JOIN courses pre ON p.prerequisite_id = pre.id
+             ORDER BY c.code, pre.code"
+        );
+    }
 }

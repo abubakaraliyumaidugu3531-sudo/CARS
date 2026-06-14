@@ -43,4 +43,19 @@ class UserModel {
         $stmt->execute();
         return $stmt->get_result();
     }
+
+    // Count of users in a role (admin KPIs).
+    public function countByRole($role) {
+        $stmt = $this->conn->prepare("SELECT COUNT(*) AS c FROM users WHERE role = ?");
+        $stmt->bind_param("s", $role);
+        $stmt->execute();
+        return (int) $stmt->get_result()->fetch_assoc()['c'];
+    }
+
+    // Every user, most recent first (admin user list).
+    public function listAll() {
+        return $this->conn->query(
+            "SELECT id, name, email, role, department, level, created_at FROM users ORDER BY created_at DESC, id DESC"
+        );
+    }
 }

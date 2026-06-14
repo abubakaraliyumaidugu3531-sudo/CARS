@@ -4,42 +4,41 @@ require_once __DIR__ . '/../helpers/session.php';
 
 $userModel = new UserModel();
 
-// ================= SIGNUP =================
+// Helper: redirect back to a page with a flash message.
+function auth_redirect($path, $key, $text) {
+    header('Location: ' . $path . '?' . $key . '=' . urlencode($text));
+    exit();
+}
+
+// ================= SIGNUP (students only) =================
 if (isset($_POST['signup'])) {
     $name = trim($_POST['name']);
     $email = trim($_POST['email']);
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
-    $role = isset($_POST['role']) ? $_POST['role'] : 'student';
-    // Programme details are only meaningful for students; the recommendation
-    // engine uses them to target level-appropriate courses.
-    $department = ($role === 'student' && !empty($_POST['department'])) ? trim($_POST['department']) : null;
-    $level = ($role === 'student' && !empty($_POST['level'])) ? trim($_POST['level']) : null;
+    // Role is forced to 'student'. Advisors/admins are provisioned by an admin.
+    $role = 'student';
+    $department = trim($_POST['department'] ?? '') ?: null;
+    $level = trim($_POST['level'] ?? '') ?: null;
 
-    // Input validation
-    $allowed_roles = ['student', 'advisor', 'admin'];
-    if (!in_array($role, $allowed_roles, true)) {
-        die('Invalid role!');
-    }
+    $signup = '/frontend/pages/signup.php';
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        die('Invalid email address!');
+        auth_redirect($signup, 'err', 'Please enter a valid email address.');
     }
     if (strlen($password) < 6) {
-        die('Password must be at least 6 characters!');
+        auth_redirect($signup, 'err', 'Password must be at least 6 characters.');
     }
     if ($password !== $confirm_password) {
-        die('Passwords do not match!');
+        auth_redirect($signup, 'err', 'Passwords do not match.');
     }
     if ($userModel->findByEmail($email)) {
-        die('Email already exists!');
+        auth_redirect($signup, 'err', 'An account with that email already exists.');
     }
     $hashed = password_hash($password, PASSWORD_DEFAULT);
-    $ok = $userModel->create($name, $email, $hashed, $role, $department, $level);
-    if ($ok) {
-        echo "Registration successful! <a href='/frontend/pages/login.php'>Login</a>";
-    } else {
-        echo "Error: Registration failed.";
+    if ($userModel->create($name, $email, $hashed, $role, $department, $level)) {
+        auth_redirect('/frontend/pages/login.php', 'msg', 'Account created. Please log in.');
     }
+    auth_redirect($signup, 'err', 'Registration failed. Please try again.');
 }
 
 // ================= LOGIN =================
@@ -50,7 +49,7 @@ if (isset($_POST['login'])) {
     if ($user && password_verify($password, $user['password'])) {
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['role'] = $user['role'];
-        // Role-based redirection
+        $_SESSION['name'] = $user['name'];
         switch ($user['role']) {
             case 'admin':
                 header('Location: /frontend/pages/admin_dashboard.php');
@@ -62,15 +61,32 @@ if (isset($_POST['login'])) {
                 header('Location: /frontend/pages/student_dashboard.php');
         }
         exit();
-    } else {
-        echo 'Invalid credentials!';
     }
+    auth_redirect('/frontend/pages/login.php', 'err', 'Invalid email or password.');
 }
 
-// ================= LOGOUT =================
-if (isset($_GET['logout'])) {
-    logout();
-    header('Location: /frontend/pages/login.php');
-    exit();
+// ================= ADMIN: CREATE STAFF ACCOUNT =================
+// Only an authenticated admin may mint advisor/admin accounts.
+if (isset($_POST['create_staff'])) {
+    require_once __DIR__ . '/../middleware/role_middleware.php';
+    require_admin();
+
+    $users = '/frontend/pages/admin_users.php';
+    $name = trim($_POST['name'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+    $password = $_POST['password'] ?? '';
+    $role = in_array($_POST['role'] ?? '', ['advisor', 'admin'], true) ? $_POST['role'] : 'advisor';
+    $department = trim($_POST['department'] ?? '') ?: null;
+
+    if (!$name || !filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($password) < 6) {
+        auth_redirect($users, 'err', 'Provide a name, valid email and a 6+ character password.');
+    }
+    if ($userModel->findByEmail($email)) {
+        auth_redirect($users, 'err', 'An account with that email already exists.');
+    }
+    $hashed = password_hash($password, PASSWORD_DEFAULT);
+    if ($userModel->create($name, $email, $hashed, $role, $department, null)) {
+        auth_redirect($users, 'msg', ucfirst($role) . ' account created.');
+    }
+    auth_redirect($users, 'err', 'Could not create the account.');
 }
-?>

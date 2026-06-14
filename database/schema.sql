@@ -94,14 +94,21 @@ CREATE TABLE IF NOT EXISTS recommendations (
 );
 
 -- APPROVALS TABLE
+-- One row per student per semester: the student submits the courses they have
+-- registered for that semester as a "plan", and an advisor reviews it. The
+-- advisor_id is NULL until an advisor decides, and `comment` carries feedback.
 CREATE TABLE IF NOT EXISTS approvals (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    advisor_id INT NOT NULL,
     student_id INT NOT NULL,
+    advisor_id INT NULL,
+    semester VARCHAR(20) NOT NULL,
     status ENUM('pending', 'approved', 'rejected') DEFAULT 'pending',
+    comment VARCHAR(255) NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     decided_at TIMESTAMP NULL,
-    FOREIGN KEY (advisor_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE CASCADE
+    FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (advisor_id) REFERENCES users(id) ON DELETE SET NULL,
+    UNIQUE KEY unique_student_semester (student_id, semester)
 );
 
 -- INDEXES FOR PERFORMANCE

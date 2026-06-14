@@ -1,36 +1,36 @@
 <?php
-session_start();
-if (isset($_SESSION['user_id'])) {
-        $role = $_SESSION['role'];
-        if ($role === 'admin') header('Location: admin_dashboard.php');
-        elseif ($role === 'advisor') header('Location: advisor_dashboard.php');
-        else header('Location: student_dashboard.php');
-        exit();
+require_once '../../backend/helpers/session.php';
+if (is_logged_in()) {
+    $role = $_SESSION['role'] ?? 'student';
+    $dest = $role === 'admin' ? 'admin_dashboard.php' : ($role === 'advisor' ? 'advisor_dashboard.php' : 'student_dashboard.php');
+    header('Location: /frontend/pages/' . $dest);
+    exit();
 }
+$msg = $_GET['msg'] ?? '';
+$err = $_GET['err'] ?? '';
+$pageTitle = 'Login';
+include '../partials/head.php';
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
-    <form class="bg-white p-8 rounded shadow w-full max-w-md" method="POST" action="../../backend/controllers/Authcontroller.php">
-        <h2 class="text-2xl font-bold mb-6 text-center">Login</h2>
-        <div class="mb-4">
-            <label class="block mb-1 font-semibold">Email</label>
-            <input type="email" name="email" required class="w-full border px-3 py-2 rounded focus:outline-none focus:ring">
-        </div>
-        <div class="mb-4">
-            <label class="block mb-1 font-semibold">Password</label>
-            <input type="password" name="password" required class="w-full border px-3 py-2 rounded focus:outline-none focus:ring">
-        </div>
-        <button type="submit" name="login" class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 font-semibold">Login</button>
-        <div class="mt-4 text-center">
-            <a href="signup.php" class="text-blue-600 hover:underline">Don't have an account? Sign up</a>
-        </div>
-    </form>
-</body>
-</html>
+<div class="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-brand-50 via-white to-violet-50">
+  <div class="w-full max-w-md">
+    <a href="/index.php" class="flex items-center justify-center gap-2 mb-6">
+      <span class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-brand-600 text-white font-bold text-lg">C</span>
+      <span class="font-bold text-xl tracking-tight text-slate-900">CARS</span>
+    </a>
+    <div class="card p-8">
+      <h1 class="text-2xl font-bold text-slate-900 mb-1">Welcome back</h1>
+      <p class="text-slate-500 text-sm mb-6">Log in to your account.</p>
+
+      <?php if ($msg): ?><div class="mb-4 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 px-4 py-3 text-sm"><?php echo htmlspecialchars($msg); ?></div><?php endif; ?>
+      <?php if ($err): ?><div class="mb-4 rounded-lg bg-rose-50 text-rose-800 border border-rose-200 px-4 py-3 text-sm"><?php echo htmlspecialchars($err); ?></div><?php endif; ?>
+
+      <form method="POST" action="/backend/controllers/Authcontroller.php" class="space-y-4">
+        <div><label class="label" for="email">Email</label><input id="email" name="email" type="email" required class="input" autofocus></div>
+        <div><label class="label" for="password">Password</label><input id="password" name="password" type="password" required class="input"></div>
+        <button type="submit" name="login" class="btn-primary w-full py-2.5">Log in</button>
+      </form>
+      <p class="mt-6 text-center text-sm text-slate-500">Don't have an account? <a href="/frontend/pages/signup.php" class="text-brand-600 font-medium hover:underline">Sign up</a></p>
+    </div>
+  </div>
+</div>
+<?php include '../partials/foot.php'; ?>

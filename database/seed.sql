@@ -69,3 +69,9 @@ INSERT INTO academic_records (student_id, course_id, semester, grade, grade_poin
 -- Jane is currently registered for Data Structures this semester.
 INSERT INTO registrations (student_id, course_id, semester) VALUES
 (3, 6, '2024/2025-1');  -- CSC201
+
+-- ------------------------- PLAN FOR APPROVAL -------------------------
+-- Jane has submitted her current-semester plan; it awaits advisor review,
+-- so the advisor queue is populated on first login.
+INSERT INTO approvals (student_id, advisor_id, semester, status) VALUES
+(3, NULL, '2024/2025-1', 'pending');

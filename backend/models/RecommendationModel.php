@@ -47,15 +47,4 @@ class RecommendationModel {
         $stmt->execute();
         return (int) $stmt->get_result()->fetch_assoc()['c'];
     }
-
-    // Aggregate acceptance statistics used by the evaluation report (Obj 5).
-    public function getStats() {
-        $sql = "SELECT
-                    COUNT(*) AS total,
-                    SUM(status = 'accepted') AS accepted,
-                    SUM(status = 'dismissed') AS dismissed,
-                    SUM(status = 'pending') AS pending
-                FROM recommendations";
-        return $this->conn->query($sql)->fetch_assoc();
-    }
 }

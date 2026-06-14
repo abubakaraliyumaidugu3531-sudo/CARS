@@ -59,14 +59,19 @@ class CourseModel {
         $stmt->execute();
         return $stmt->get_result()->fetch_assoc();
     }
-    public function create($code, $title, $credit_unit, $department) {
-        $stmt = $this->conn->prepare("INSERT INTO courses (code, title, credit_unit, department) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("ssis", $code, $title, $credit_unit, $department);
+    public function create($code, $title, $credit_unit, $department, $level = '100', $semester = 'any', $is_core = 1, $description = null) {
+        $stmt = $this->conn->prepare(
+            "INSERT INTO courses (code, title, credit_unit, department, level, semester, is_core, description)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+        );
+        $stmt->bind_param("ssisssis", $code, $title, $credit_unit, $department, $level, $semester, $is_core, $description);
         return $stmt->execute();
     }
-    public function update($id, $code, $title, $credit_unit, $department) {
-        $stmt = $this->conn->prepare("UPDATE courses SET code=?, title=?, credit_unit=?, department=? WHERE id=?");
-        $stmt->bind_param("ssisi", $code, $title, $credit_unit, $department, $id);
+    public function update($id, $code, $title, $credit_unit, $department, $level = '100', $semester = 'any', $is_core = 1, $description = null) {
+        $stmt = $this->conn->prepare(
+            "UPDATE courses SET code=?, title=?, credit_unit=?, department=?, level=?, semester=?, is_core=?, description=? WHERE id=?"
+        );
+        $stmt->bind_param("ssisssisi", $code, $title, $credit_unit, $department, $level, $semester, $is_core, $description, $id);
         return $stmt->execute();
     }
     public function delete($id) {
