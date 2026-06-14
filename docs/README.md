@@ -30,9 +30,11 @@ Place project inside:
 htdocs/ (XAMPP)
 
 ### 4. Setup Database
-- Open phpMyAdmin
-- Create database: course_advisory
-- Import database/schema.sql
+- Open phpMyAdmin (you do NOT need to create the database first)
+- Click Import, choose `database/schema.sql`, then Go
+  - This single file creates the `course_advisory_system` database, all tables,
+    and demo data. It is safe to re-run (it resets the data).
+- Demo logins (password `password123`): `admin@cars.test`, `advisor@cars.test`, `jane@cars.test`
 
 ### 5. Run Project
 Start Apache & MySQL
