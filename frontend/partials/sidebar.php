@@ -51,7 +51,7 @@ $menu = $menus[$role] ?? $menus['student'];
   </div>
   <nav class="flex-1 overflow-y-auto p-3 space-y-1">
     <?php foreach ($menu as [$label, $file, $icon]): ?>
-      <a href="/frontend/pages/<?php echo $file; ?>"
+      <a href="/cars/frontend/pages/<?php echo $file; ?>"
          class="nav-link <?php echo $current === $file ? 'nav-link-active' : ''; ?>">
         <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><?php echo $icons[$icon]; ?></svg>
         <span><?php echo $label; ?></span>

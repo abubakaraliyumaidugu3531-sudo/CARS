@@ -1,7 +1,7 @@
 <?php
 require_once '../../backend/helpers/session.php';
 if (is_logged_in()) {
-    header('Location: /index.php');
+    header('Location: /cars/index.php');
     exit();
 }
 $err = $_GET['err'] ?? '';
@@ -11,7 +11,7 @@ include '../partials/head.php';
 ?>
 <div class="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-brand-50 via-white to-violet-50">
   <div class="w-full max-w-md">
-    <a href="/index.php" class="flex items-center justify-center gap-2 mb-6">
+    <a href="/cars/index.php" class="flex items-center justify-center gap-2 mb-6">
       <span class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-brand-600 text-white font-bold text-lg">C</span>
       <span class="font-bold text-xl tracking-tight text-slate-900">CARS</span>
     </a>
@@ -21,7 +21,7 @@ include '../partials/head.php';
 
       <?php if ($err): ?><div class="mb-4 rounded-lg bg-rose-50 text-rose-800 border border-rose-200 px-4 py-3 text-sm"><?php echo htmlspecialchars($err); ?></div><?php endif; ?>
 
-      <form method="POST" action="/backend/controllers/Authcontroller.php" class="space-y-4">
+      <form method="POST" action="/cars/backend/controllers/Authcontroller.php" class="space-y-4">
         <div><label class="label" for="name">Full name</label><input id="name" name="name" type="text" required class="input"></div>
         <div><label class="label" for="email">Email</label><input id="email" name="email" type="email" required class="input"></div>
         <div class="grid grid-cols-2 gap-3">
@@ -36,7 +36,7 @@ include '../partials/head.php';
         </div>
         <button type="submit" name="signup" class="btn-primary w-full py-2.5">Create account</button>
       </form>
-      <p class="mt-6 text-center text-sm text-slate-500">Already have an account? <a href="/frontend/pages/login.php" class="text-brand-600 font-medium hover:underline">Log in</a></p>
+      <p class="mt-6 text-center text-sm text-slate-500">Already have an account? <a href="/cars/frontend/pages/login.php" class="text-brand-600 font-medium hover:underline">Log in</a></p>
     </div>
   </div>
 </div>

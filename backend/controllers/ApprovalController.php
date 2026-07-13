@@ -39,7 +39,7 @@ if (realpath(__FILE__) === realpath($_SERVER['SCRIPT_FILENAME'] ?? '')) {
 
     $role = $_SESSION['role'] ?? '';
     $controller = new ApprovalController();
-    $back = $_SERVER['HTTP_REFERER'] ?? '/frontend/pages/login.php';
+    $back = $_SERVER['HTTP_REFERER'] ?? '/cars/frontend/pages/login.php';
     $sep = strpos($back, '?') === false ? '?' : '&';
     $action = $_POST['action'] ?? '';
 

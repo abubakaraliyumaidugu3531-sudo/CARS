@@ -85,4 +85,36 @@ class AcademicRecordModel {
         }
         return round($row['quality_points'] / $row['total_units'], 2);
     }
+
+    // GPA statistics for all students (admin reports).
+    public function getGPAStatistics() {
+        $result = $this->conn->query(
+            "SELECT 
+                COUNT(DISTINCT ar.student_id) as total_students,
+                AVG(ar.grade_point) as avg_gpa,
+                MAX(ar.grade_point) as max_gpa,
+                MIN(ar.grade_point) as min_gpa
+             FROM academic_records ar"
+        );
+        return $result->fetch_assoc();
+    }
+
+    // Course enrollment statistics (admin reports).
+    public function getCourseEnrollmentStats() {
+        $result = $this->conn->query(
+            "SELECT 
+                c.code,
+                c.title,
+                COUNT(DISTINCT ar.student_id) as enrolled_count,
+                AVG(ar.grade_point) as avg_grade,
+                SUM(CASE WHEN ar.status = 'passed' THEN 1 ELSE 0 END) as pass_count,
+                SUM(CASE WHEN ar.status = 'failed' THEN 1 ELSE 0 END) as fail_count
+             FROM academic_records ar
+             JOIN courses c ON ar.course_id = c.id
+             GROUP BY c.id, c.code, c.title
+             ORDER BY enrolled_count DESC
+             LIMIT 20"
+        );
+        return $result;
+    }
 }

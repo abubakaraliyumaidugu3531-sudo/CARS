@@ -23,7 +23,7 @@ if (realpath(__FILE__) === realpath($_SERVER['SCRIPT_FILENAME'] ?? '')) {
     require_admin();
 
     $controller = new RecordController();
-    $back = '/frontend/pages/admin_records.php';
+    $back = '/cars/frontend/pages/admin_records.php';
 
     $student_id = (int) ($_POST['student_id'] ?? 0);
     $course_id = (int) ($_POST['course_id'] ?? 0);

@@ -10,14 +10,14 @@ function is_logged_in() {
 
 function require_login() {
     if (!is_logged_in()) {
-        header('Location: /frontend/pages/login.php');
+        header('Location: /cars/frontend/pages/login.php');
         exit;
     }
 }
 
 function require_role($role) {
     if (!isset($_SESSION['role']) || $_SESSION['role'] !== $role) {
-        header('Location: /frontend/pages/login.php');
+        header('Location: /cars/frontend/pages/login.php');
         exit;
     }
 }

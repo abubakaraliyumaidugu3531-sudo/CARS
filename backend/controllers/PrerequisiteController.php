@@ -25,7 +25,7 @@ if (realpath(__FILE__) === realpath($_SERVER['SCRIPT_FILENAME'] ?? '')) {
     require_admin();
 
     $controller = new PrerequisiteController();
-    $back = '/frontend/pages/admin_prerequisites.php';
+    $back = '/cars/frontend/pages/admin_prerequisites.php';
     $action = $_POST['action'] ?? '';
     $courseId = (int) ($_POST['course_id'] ?? 0);
     $prereqId = (int) ($_POST['prerequisite_id'] ?? 0);

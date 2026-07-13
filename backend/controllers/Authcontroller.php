@@ -21,7 +21,7 @@ if (isset($_POST['signup'])) {
     $department = trim($_POST['department'] ?? '') ?: null;
     $level = trim($_POST['level'] ?? '') ?: null;
 
-    $signup = '/frontend/pages/signup.php';
+    $signup = '/cars/frontend/pages/signup.php';
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         auth_redirect($signup, 'err', 'Please enter a valid email address.');
     }
@@ -36,7 +36,7 @@ if (isset($_POST['signup'])) {
     }
     $hashed = password_hash($password, PASSWORD_DEFAULT);
     if ($userModel->create($name, $email, $hashed, $role, $department, $level)) {
-        auth_redirect('/frontend/pages/login.php', 'msg', 'Account created. Please log in.');
+        auth_redirect('/cars/frontend/pages/login.php', 'msg', 'Account created. Please log in.');
     }
     auth_redirect($signup, 'err', 'Registration failed. Please try again.');
 }
@@ -52,17 +52,17 @@ if (isset($_POST['login'])) {
         $_SESSION['name'] = $user['name'];
         switch ($user['role']) {
             case 'admin':
-                header('Location: /frontend/pages/admin_dashboard.php');
+                header('Location: /cars/frontend/pages/admin_dashboard.php');
                 break;
             case 'advisor':
-                header('Location: /frontend/pages/advisor_dashboard.php');
+                header('Location: /cars/frontend/pages/advisor_dashboard.php');
                 break;
             default:
-                header('Location: /frontend/pages/student_dashboard.php');
+                header('Location: /cars/frontend/pages/student_dashboard.php');
         }
         exit();
     }
-    auth_redirect('/frontend/pages/login.php', 'err', 'Invalid email or password.');
+    auth_redirect('/cars/frontend/pages/login.php', 'err', 'Invalid email or password.');
 }
 
 // ================= ADMIN: CREATE STAFF ACCOUNT =================
@@ -71,7 +71,7 @@ if (isset($_POST['create_staff'])) {
     require_once __DIR__ . '/../middleware/role_middleware.php';
     require_admin();
 
-    $users = '/frontend/pages/admin_users.php';
+    $users = '/cars/frontend/pages/admin_users.php';
     $name = trim($_POST['name'] ?? '');
     $email = trim($_POST['email'] ?? '');
     $password = $_POST['password'] ?? '';

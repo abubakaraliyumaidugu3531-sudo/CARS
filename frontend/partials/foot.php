@@ -1,3 +1,3 @@
-<script src="/frontend/js/main.js" defer></script>
+<script src="/cars/frontend/js/main.js" defer></script>
 </body>
 </html>

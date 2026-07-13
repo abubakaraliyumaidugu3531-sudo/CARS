@@ -34,7 +34,7 @@ if (realpath(__FILE__) === realpath($_SERVER['SCRIPT_FILENAME'] ?? '')) {
     require_admin();
 
     $controller = new CourseController();
-    $back = '/frontend/pages/admin_courses.php';
+    $back = '/cars/frontend/pages/admin_courses.php';
     $action = $_POST['action'] ?? '';
 
     $code = trim($_POST['code'] ?? '');

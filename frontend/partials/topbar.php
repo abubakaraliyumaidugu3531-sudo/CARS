@@ -23,6 +23,6 @@ $roleBadge = [
       <span class="badge <?php echo $roleBadge; ?> capitalize"><?php echo htmlspecialchars($role); ?></span>
     </div>
     <span class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-brand-600 text-white text-sm font-semibold"><?php echo htmlspecialchars($initials); ?></span>
-    <a href="/backend/controllers/logout.php" class="btn-secondary btn-sm">Logout</a>
+    <a href="/cars/backend/controllers/logout.php" class="btn-secondary btn-sm">Logout</a>
   </div>
 </header>

@@ -4,7 +4,7 @@ require_once __DIR__ . '/backend/helpers/session.php';
 if (is_logged_in()) {
     $role = $_SESSION['role'] ?? 'student';
     $dest = $role === 'admin' ? 'admin_dashboard.php' : ($role === 'advisor' ? 'advisor_dashboard.php' : 'student_dashboard.php');
-    header('Location: /frontend/pages/' . $dest);
+    header('Location: /cars/frontend/pages/' . $dest);
     exit;
 }
 $pageTitle = 'Welcome';
@@ -17,8 +17,8 @@ include __DIR__ . '/frontend/partials/head.php';
       <span class="font-bold tracking-tight text-slate-900">CARS</span>
     </div>
     <div class="flex items-center gap-2">
-      <a href="/frontend/pages/login.php" class="btn-secondary btn-sm">Login</a>
-      <a href="/frontend/pages/signup.php" class="btn-primary btn-sm">Sign up</a>
+      <a href="/cars/frontend/pages/login.php" class="btn-secondary btn-sm">Login</a>
+      <a href="/cars/frontend/pages/signup.php" class="btn-primary btn-sm">Sign up</a>
     </div>
   </header>
 
@@ -29,8 +29,8 @@ include __DIR__ . '/frontend/partials/head.php';
         <h1 class="text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900">Pick the right courses, with confidence.</h1>
         <p class="mt-4 text-lg text-slate-600">CARS analyses your academic record, prerequisites and programme level to recommend the courses you should take next — and connects you with your academic advisor for approval.</p>
         <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
-          <a href="/frontend/pages/signup.php" class="btn-primary px-6 py-3">Create a student account</a>
-          <a href="/frontend/pages/login.php" class="btn-secondary px-6 py-3">I already have an account</a>
+          <a href="/cars/frontend/pages/signup.php" class="btn-primary px-6 py-3">Create a student account</a>
+          <a href="/cars/frontend/pages/login.php" class="btn-secondary px-6 py-3">I already have an account</a>
         </div>
       </div>
     </section>

@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $department = trim($_POST['department'] ?? '') ?: null;
     $level = trim($_POST['level'] ?? '') ?: null;
     $userModel->updateProfile($student_id, $department, $level);
-    header('Location: /frontend/pages/profile.php?msg=' . urlencode('Profile updated. Regenerate recommendations to use the new details.'));
+    header('Location: /cars/frontend/pages/profile.php?msg=' . urlencode('Profile updated. Regenerate recommendations to use the new details.'));
     exit;
 }
 

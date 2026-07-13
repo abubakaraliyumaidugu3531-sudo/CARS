@@ -76,7 +76,7 @@ include '../partials/shell_open.php';
 <div class="card p-0 overflow-hidden">
   <div class="flex items-center justify-between p-4 border-b border-slate-100">
     <h3 class="font-semibold text-slate-900">Registered Courses</h3>
-    <a href="/frontend/pages/recommendations.php" class="btn-primary btn-sm">Find courses</a>
+    <a href="/cars/frontend/pages/recommendations.php" class="btn-primary btn-sm">Find courses</a>
   </div>
   <div class="overflow-x-auto">
     <table class="table">

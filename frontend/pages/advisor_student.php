@@ -22,7 +22,7 @@ $student = $student_id ? $userModel->findById($student_id) : null;
 // Guard: only review students that exist and share the advisor's department.
 if (!$student || $student['role'] !== 'student'
     || ($advisor['department'] && $student['department'] !== $advisor['department'])) {
-    header('Location: /frontend/pages/advisor_dashboard.php?err=' . urlencode('You cannot review that student.'));
+    header('Location: /cars/frontend/pages/advisor_dashboard.php?err=' . urlencode('You cannot review that student.'));
     exit;
 }
 
@@ -42,7 +42,7 @@ include '../partials/shell_open.php';
 ?>
 <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
   <div>
-    <a href="/frontend/pages/advisor_dashboard.php" class="text-sm text-brand-600 hover:underline">&larr; Back to queue</a>
+    <a href="/cars/frontend/pages/advisor_dashboard.php" class="text-sm text-brand-600 hover:underline">&larr; Back to queue</a>
     <h2 class="text-2xl font-bold text-slate-900 mt-1"><?php echo htmlspecialchars($student['name']); ?></h2>
     <p class="text-slate-500 text-sm"><?php echo htmlspecialchars($student['department'] ?? '—'); ?> &middot; <?php echo htmlspecialchars($student['level'] ?? '—'); ?> Level &middot; GPA <?php echo number_format($gpa, 2); ?> (<?php echo htmlspecialchars(gpa_classification($gpa)); ?>)</p>
   </div>
@@ -55,7 +55,7 @@ include '../partials/shell_open.php';
 <?php if ($approval_id): ?>
 <div class="card p-5 mb-6">
   <h3 class="font-semibold text-slate-900 mb-3">Decision</h3>
-  <form method="POST" action="/backend/controllers/ApprovalController.php" class="space-y-3">
+  <form method="POST" action="/cars/backend/controllers/ApprovalController.php" class="space-y-3">
     <input type="hidden" name="approval_id" value="<?php echo $approval_id; ?>">
     <div>
       <label class="label" for="comment">Comment (optional)</label>

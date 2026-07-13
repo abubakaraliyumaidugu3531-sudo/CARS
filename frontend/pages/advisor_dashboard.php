@@ -58,7 +58,7 @@ include '../partials/shell_open.php';
               <td><?php echo htmlspecialchars($row['level'] ?? '—'); ?></td>
               <td><?php echo htmlspecialchars($row['semester']); ?></td>
               <td class="text-slate-500"><?php echo htmlspecialchars($row['created_at']); ?></td>
-              <td><a href="/frontend/pages/advisor_student.php?student_id=<?php echo (int) $row['student_id']; ?>&approval_id=<?php echo (int) $row['id']; ?>" class="btn-primary btn-sm">Review</a></td>
+              <td><a href="/cars/frontend/pages/advisor_student.php?student_id=<?php echo (int) $row['student_id']; ?>&approval_id=<?php echo (int) $row['id']; ?>" class="btn-primary btn-sm">Review</a></td>
             </tr>
           <?php endforeach; ?>
         <?php endif; ?>

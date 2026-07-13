@@ -34,7 +34,7 @@ include '../partials/shell_open.php';
 <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
   <div class="card p-6 xl:col-span-1 h-fit">
     <h3 class="font-semibold text-slate-900 mb-4">Record a grade</h3>
-    <form method="POST" action="/backend/controllers/RecordController.php" class="space-y-3">
+    <form method="POST" action="/cars/backend/controllers/RecordController.php" class="space-y-3">
       <div>
         <label class="label">Student</label>
         <select name="student_id" class="input" required>

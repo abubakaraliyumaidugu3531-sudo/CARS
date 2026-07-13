@@ -56,7 +56,7 @@ include '../partials/shell_open.php';
   <div class="flex items-center justify-between p-4 border-b border-slate-100">
     <h3 class="font-semibold text-slate-900">Registered for <?php echo htmlspecialchars(CURRENT_SEMESTER); ?> <span class="text-slate-400 font-normal">(<?php echo $totalUnits; ?> units)</span></h3>
     <?php if (!empty($semesterCourses)): ?>
-      <form method="POST" action="/backend/controllers/ApprovalController.php"
+      <form method="POST" action="/cars/backend/controllers/ApprovalController.php"
             data-confirm="Submit your <?php echo count($semesterCourses); ?> course(s) for advisor approval?">
         <input type="hidden" name="action" value="submit_plan">
         <button type="submit" class="btn-primary btn-sm">Submit for approval</button>
@@ -70,7 +70,7 @@ include '../partials/shell_open.php';
         <?php if (empty($semesterCourses)): ?>
           <tr><td colspan="3" class="text-center text-slate-400 py-10">
             You have no courses registered for this semester yet.
-            <a href="/frontend/pages/recommendations.php" class="text-brand-600 hover:underline">Find courses</a>.
+            <a href="/cars/frontend/pages/recommendations.php" class="text-brand-600 hover:underline">Find courses</a>.
           </td></tr>
         <?php else: ?>
           <?php foreach ($semesterCourses as $row): ?>

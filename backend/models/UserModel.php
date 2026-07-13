@@ -58,4 +58,72 @@ class UserModel {
             "SELECT id, name, email, role, department, level, created_at FROM users ORDER BY created_at DESC, id DESC"
         );
     }
+
+    // Search users by name, email, role, or department (admin feature).
+    public function search($keyword = '', $role = '') {
+        $query = "SELECT id, name, email, role, department, level, created_at FROM users WHERE 1=1";
+        $params = [];
+        $types = '';
+
+        if (!empty($keyword)) {
+            $keyword = "%{$keyword}%";
+            $query .= " AND (name LIKE ? OR email LIKE ?)";
+            $params[] = $keyword;
+            $params[] = $keyword;
+            $types .= 'ss';
+        }
+
+        if (!empty($role)) {
+            $query .= " AND role = ?";
+            $params[] = $role;
+            $types .= 's';
+        }
+
+        $query .= " ORDER BY created_at DESC, id DESC";
+
+        if (empty($params)) {
+            return $this->conn->query($query);
+        }
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param($types, ...$params);
+        $stmt->execute();
+        return $stmt->get_result();
+    }
+
+    // Update user details (admin feature).
+    public function update($id, $name, $email, $role, $department = null, $level = null) {
+        $stmt = $this->conn->prepare(
+            "UPDATE users SET name = ?, email = ?, role = ?, department = ?, level = ? WHERE id = ?"
+        );
+        $stmt->bind_param("sssssi", $name, $email, $role, $department, $level, $id);
+        return $stmt->execute();
+    }
+
+    // Delete a user and all their related records (admin feature).
+    public function delete($id) {
+        // Delete related records first (cascading deletes)
+        $this->conn->query("DELETE FROM recommendations WHERE student_id = {$id}");
+        $this->conn->query("DELETE FROM registrations WHERE student_id = {$id}");
+        $this->conn->query("DELETE FROM academic_records WHERE student_id = {$id}");
+        $this->conn->query("DELETE FROM approvals WHERE student_id = {$id}");
+
+        // Delete the user
+        $stmt = $this->conn->prepare("DELETE FROM users WHERE id = ?");
+        $stmt->bind_param("i", $id);
+        return $stmt->execute();
+    }
+
+    // Check if email exists (excluding current user, for edit validation).
+    public function emailExists($email, $excludeId = null) {
+        if ($excludeId) {
+            $stmt = $this->conn->prepare("SELECT id FROM users WHERE email = ? AND id != ? LIMIT 1");
+            $stmt->bind_param("si", $email, $excludeId);
+        } else {
+            $stmt = $this->conn->prepare("SELECT id FROM users WHERE email = ? LIMIT 1");
+            $stmt->bind_param("s", $email);
+        }
+        $stmt->execute();
+        return $stmt->get_result()->num_rows > 0;
+    }
 }

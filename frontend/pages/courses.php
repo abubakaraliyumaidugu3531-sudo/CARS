@@ -45,7 +45,7 @@ include '../partials/shell_open.php';
     </select>
   </div>
   <button type="submit" class="btn-primary">Search</button>
-  <?php if ($search || $department): ?><a href="/frontend/pages/courses.php" class="btn-ghost">Clear</a><?php endif; ?>
+  <?php if ($search || $department): ?><a href="/cars/frontend/pages/courses.php" class="btn-ghost">Clear</a><?php endif; ?>
 </form>
 
 <div class="card p-0 overflow-hidden">
